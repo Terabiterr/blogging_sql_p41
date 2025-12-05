@@ -1,4 +1,6 @@
-﻿namespace ConsoleApp1.Services
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ConsoleApp1.Services
 {
     public interface IBlogService
     {
@@ -17,7 +19,7 @@
         public void CreateTrigger(string sql);
         public void CreateView(string sql);
     }
-    public class BlogService : IBlogService
+    public class BlogService : IBlogService, IDisposable
     {
         private readonly BloggingContext _context;
         public BlogService(BloggingContext context)
@@ -27,7 +29,11 @@
 
         public void AddBlog(Blog blog)
         {
-            throw new NotImplementedException();
+            if(blog != null)
+            {
+                //string sql = $"INSERT INTO Blogs(Name) VALUES('{blog.Name}')";
+                //_context.Database.ExecuteSqlRaw(sql);
+            }
         }
 
         public void AddPostToBlog(int blogId, Post post)
@@ -53,6 +59,11 @@
         public void DeleteBlog(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
 
         public Blog GetBlogById(int id)
