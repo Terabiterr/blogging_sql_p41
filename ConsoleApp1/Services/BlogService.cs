@@ -33,6 +33,8 @@ namespace ConsoleApp1.Services
             {
                 //string sql = $"INSERT INTO Blogs(Name) VALUES('{blog.Name}')";
                 //_context.Database.ExecuteSqlRaw(sql);
+                _context.Blogs.Add(blog);
+                _context.SaveChanges();
             }
         }
 
@@ -48,7 +50,7 @@ namespace ConsoleApp1.Services
 
         public void CreateTrigger(string sql)
         {
-            throw new NotImplementedException();
+            _context.Database.ExecuteSqlRaw(sql);
         }
 
         public void CreateView(string sql)

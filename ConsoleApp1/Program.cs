@@ -8,7 +8,16 @@ namespace ConsoleApp1
         {
             using (var db = new BlogService(new BloggingContext()))
             {
-                db.AddBlog(new Blog { Name = "A new blog " });
+                //db.AddBlog(new Blog { Name = "A new blog " });
+                string sql = @"
+                CREATE TRIGGER DeletePostAfterBlogDeletion
+                ON Blogs
+                AFTER DELETE
+                AS
+                BEGIN
+                DELETE FROM Posts WHERE BlogId = (SELECT deleted.BlogId FROM deleted);
+                END";
+                db.CreateTrigger(sql);
             }
             using (var db = new BloggingContext())
             {
